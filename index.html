@@ -80,6 +80,28 @@
       font-size: 28px;
     }
 
+    .buttonr-container {
+      display: flex;
+      flex-direction: row;
+      /* Keep buttons in a row */
+      justify-content: center;
+      flex-wrap: wrap;
+      /* Wrap buttons for smaller screens */
+      margin-top: 20px;
+      /* Space above the buttons */
+    }
+
+    .buttonr {
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 28px;
+    }
+
     #timer {
       font-size: 140px;
       /* Increased font size */
@@ -111,12 +133,14 @@
     <div id="timer">00:00 to 00:00</div>
     <br /> <br />
     <div class="button-container mt-5">
-      <button class="button" onclick="startTimer(1)">1 Minute</button>
-      <button class="button" onclick="startTimer(3)">3 Minutes</button>
-      <button class="button" onclick="startTimer(6)">6 Minutes</button>
-      <button class="button" onclick="startTimer(7)">7 Minutes</button>
-      <button class="button" onclick="startTimer(10)">10 Minutes</button>
-      <button class="buttonw" onclick="togglePause()">Pause/Resume</button>
+      <button class="button" onclick="startTimer(1)">1 นาที</button>
+      <button class="button" onclick="startTimer(2)">2 นาที</button>
+      <button class="button" onclick="startTimer(3)">3 นาที</button>
+      <button class="button" onclick="startTimer(5)">5 นาที</button>
+      <button class="button" onclick="startTimer(7)">7 นาที</button>
+      <button class="button" onclick="startTimer(10)">10 นาที</button>
+      <button class="buttonr" onclick="beginCountdown()">เริ่ม</button>
+      <button class="buttonw" onclick="togglePause()">หยุด/ต่อไป</button>
     </div>
   </div>
 
@@ -141,16 +165,27 @@
       }
     }
 
+    var timer;
+    var totalSeconds = 0;
+    var targetTime = 0;
+    var isPaused = true; // Start with the timer paused
+
     function startTimer(minutes) {
-      clearInterval(timer);
       totalSeconds = 0;
       targetTime = minutes * 60;
       updateDisplay();
-      timer = setInterval(countUp, 1000);
-      isPaused = false;
-      document.body.classList.remove('blink', 'red-background'); // Reset blinking and red background
-      document.getElementById('timer').style.display = 'block'; // Show the timer
-      document.getElementById('timerUp').style.display = 'none'; // Hide "Time Up" message
+      isPaused = true; // Pause the timer after setting the time
+      document.getElementById('timer').style.display = 'block';
+      document.getElementById('timerUp').style.display = 'none';
+      document.body.classList.remove('blink', 'red-background');
+    }
+
+    function beginCountdown() {
+      if (targetTime > 0) {
+        clearInterval(timer);
+        timer = setInterval(countUp, 1000);
+        isPaused = false; // Start the countdown
+      }
     }
 
     function updateDisplay() {
