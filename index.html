@@ -122,12 +122,30 @@
     .red-background {
       background-color: #FA8072;
     }
+
+    .pie-chart {
+      transform: rotate(-90deg);
+      border-radius: 50%;
+    }
+
+    #pie-slice {
+      fill: none;
+      stroke: #4CAF50;
+      stroke-width: 32;
+      stroke-dasharray: 100 100;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+    }
   </style>
 </head>
 
 <body>
 
   <div class="container">
+    <svg width="100" height="100" viewBox="0 0 32 32" class="pie-chart">
+      <circle r="16" cx="16" cy="16" id="pie-slice" />
+    </svg>
+
     <div id="timerUp" style="display: none; font-size: 140px; margin: 20px; text-align: center;"><b>หมดเวลา!</b></div>
 
     <div id="timer">00:00 to 00:00</div>
@@ -194,7 +212,13 @@
       var minutesTarget = Math.floor(targetTime / 60);
       var secondsTarget = targetTime % 60;
       document.getElementById('timer').innerText = `${pad(minutesCurrent)}:${pad(secondsCurrent)} to ${pad(minutesTarget)}:${pad(secondsTarget)}`;
+
+      // Update pie chart
+      var progress = totalSeconds / targetTime;
+      var offset = (1 - progress) * 100;
+      document.getElementById('pie-slice').style.strokeDashoffset = offset;
     }
+
 
     function pad(value) {
       return value.toString().padStart(2, '0');
@@ -215,13 +239,14 @@
     }
 
   </script>
+  <br />
+  <footer class="text-center text-lg-start bg-light text-muted"
+    style="  position: static;left: 0;bottom: 0;width: 100%;">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+      © 2024 Copyright | พัฒนาโดยครูสิทธิชาติ สิทธิ<br />
+    </div>
+  </footer>
 
-<br/>
-<footer class="text-center text-lg-start bg-light text-muted" style="  position: static;left: 0;bottom: 0;width: 100%;">
-  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-    © 2024 Copyright  | พัฒนาโดยครูสิทธิชาติ สิทธิ<br/>
-  </div>
-</footer>
 </body>
 
 </html>
